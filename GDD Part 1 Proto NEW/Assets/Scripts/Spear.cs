@@ -9,20 +9,38 @@ public class Spear : MonoBehaviour {
     GameObject refToM;
     GameObject stoneThrow;
 
+    Rigidbody2D body2D;
+
     public bool KillP = false;
+    public float Speed = 100f;
+
+    Vector2 currentPos;
 
 	// Use this for initialization
 	void Start () {
         Player = GameObject.FindGameObjectWithTag("Player");
         refToM = GameObject.FindGameObjectWithTag("Manager");
+
+        body2D = GetComponent<Rigidbody2D>();
+
+        Speed = 500f;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		Stone = GameObject.FindGameObjectWithTag ("Stone");
 
 
-        if(KillP == true)
+
+
+            //Vector2 direction = new Vector2(body2D.velocity.x, body2D.velocity.y);
+            Vector3 direction = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) + 90;
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Speed);
+        
+
+        if (KillP == true)
         {
             GetComponent<Rigidbody2D>().gravityScale = 0;
 
